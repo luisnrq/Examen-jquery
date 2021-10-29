@@ -1,0 +1,75 @@
+<script>
+    $(document).ready(function(){
+        var url = "https://apiseriespersonajes.azurewebsites.net/";
+        var request = "api/Series";
+
+        $.ajax({
+            "url": url + request,
+            "type": "GET",
+            success: function (data) {
+                $.each(data, function (index, serie) {
+                    var enlace = $("<a>",{
+                        "text": serie.nombre,
+                        "href": "#",
+                        "data-idserie": serie.idSerie,
+                        "class": "dropdown-item"
+                    });
+                    $('#mostrarseries').append(enlace);
+                    enlace.click(function(){
+                        var id = $(this).data('idserie');
+                        var pagina = "serie.html";
+                        $('#container').load(pagina).data("idserie",id);
+                    });
+                })
+            }
+        });
+
+        //Botones estaticos del nav:
+
+        $('#inicio').click(function(){
+            $("#container").load("inicio.html");
+        });
+
+        $('#nuevopersonaje').click(function(){
+            $("#container").load("nuevopersonaje.html");
+        });
+
+        $('#modificarpersonaje').click(function(){
+            $("#container").load("modificarpersonaje.html");
+        });
+        
+
+
+    });
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container-fluid container">
+        <a class="navbar-brand" href="#">
+            <img src="./img/logo.png" alt="" width="80" height="70"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a id="inicio" class="nav-link active" aria-current="page" href="#" data-pagina="inicio">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a id="nuevopersonaje" class="nav-link" href="#">Nuevo Personaje</a>
+                </li>   
+                <li class="nav-item">
+                    <a id="modificarpersonaje" class="nav-link" href="#">Modificar Personajes</a>
+                </li>                  
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Series
+                    </a>
+                    <ul id="mostrarseries" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

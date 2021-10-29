@@ -1,0 +1,37 @@
+
+<div class="container">
+    <div class="card mx-auto text-center" style="width:18rem">
+    <img id="imagenCard" src="" class="card-img-top" alt="imagenserie"/>
+    <div class="card-body">
+        <h5 id="nombreserie" class="card-title"></h5>
+        <p id="puntuacion" class="card-text"></p>
+        <button id="verpersonajes" class="btn btn-success">Personajes</button>
+    </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        var idserie = $("#container").data("idserie");
+        console.log(idserie);
+
+        var request = `/api/Series/${idserie}`;
+        var url = "https://apiseriespersonajes.azurewebsites.net/";
+
+        $.ajax({
+            "url": url + request,
+            "type": "GET",
+            success: function(data){
+                //console.log(data);
+                $("#nombreserie").text(data.nombre);
+                $('#imagenCard').attr("src",data.imagen);
+                $("#puntuacion").text("IMDB: "+data.puntuacion);
+            }
+        });
+
+        $('#verpersonajes').click(function(){
+            $("#container").load("/personajes.html").data("idserie", idserie);
+        });
+
+    });
+</script>

@@ -1,0 +1,44 @@
+<div class="text-center mb-4">
+    <button id="volver" id="volver" class="btn btn-danger">Volver</button>
+</div>
+    <table id="table_result" class="table table-success text-center">
+        <thead>
+          <tr>
+            <th scope="col">Personaje</th>
+            <th scope="col">Imagen</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+<script>
+
+    $(document).ready(function(){
+        //Recibimos el id de la serie por data y creamos la url
+        var idserie = $("#container").data("idserie");
+        var request = `api/Series/PersonajesSerie/${idserie}`;
+        var urlapi = "https://apiseriespersonajes.azurewebsites.net/";
+
+        $.ajax({
+            "url": urlapi + request,
+            "type": "GET",
+            success: function(data){
+                $.each(data,function(index,personaje){
+                    //Creamos las filas y los td de la tabla
+                    var row = $('<tr>');
+                        row.append($("<td>",{"text":personaje.nombre}));
+                        row.append($("<td>").append($("<img>").attr({"src":personaje.imagen,"width":"150","height":"150"})));
+                    $('#table_result tbody').append(row);
+                });
+                
+            }
+        });
+
+        $('#volver').click(function(){
+            $("#container").load("/serie.html").data("idserie", idserie);
+        });
+
+    });
+
+</script>
